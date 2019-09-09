@@ -1,0 +1,91 @@
+CREATE DATABASE db CHARACTER SET utf8 COLLATE utf8_general_ci;
+use  db;
+create table if not exists 学校省份(
+省_id int auto_increment primary key,
+省份名 varchar(45));
+
+create table if not exists 中学联系方式(
+学校_id int auto_increment primary key,
+省_id int,
+学校名 varchar(45),
+联系人 varchar(255),
+email varchar(45),
+电话 decimal(15,0),
+微_信 varchar(255),
+FOREIGN KEY (省_id) REFERENCES 学校省份(省_id)
+);
+create table if not exists 大学清单(
+大学_id int auto_increment primary key,
+省_id int,
+城市 varchar(255),
+校名 varchar(255),
+FOREIGN KEY (省_id) REFERENCES 学校省份(省_id)
+);
+
+create table if not exists 大学联系方式(
+id int auto_increment primary key,
+大学_id int,
+省_id int,
+部门 varchar(255),
+联系人 varchar(255),
+职位 varchar(255),
+电话 varchar(255),
+邮箱 varchar(255),
+地址 varchar(255),
+特别信息备注 varchar(255),
+网址 varchar(255),
+专业 varchar(255),
+备注 varchar(255),
+FOREIGN KEY (大学_id) REFERENCES 大学清单(大学_id)
+);
+
+create table if not exists 大学项目详情(
+序列号 int auto_increment primary key,
+大学_id int,
+UCI_EUR boolean,
+UCI_ASAP boolean,
+UCI_ACP boolean,
+UCI_GP boolean,
+UCI_LLM boolean,
+UCI_EMBA boolean,
+UCI_ESLSummer boolean,
+UCI_老师培训 boolean,
+UCI_AI boolean,
+ACAD_珠宝 boolean,
+UTA boolean,
+UBC_SITI_PGSSP boolean,
+协议进度  text,
+跟进工作 text,
+主要联系人 text,
+反应情况 text,
+UTA送生人数 int,
+备注  varchar(255),
+
+FOREIGN KEY (大学_id) REFERENCES 大学清单(大学_id)
+);
+create table if not exists 费用(
+项目 varchar(45),
+住宿费押金 decimal(10,0),
+签证费 decimal(10,0),
+申请费 decimal(10,0)
+);
+create table if not exists 中学项目详情(
+序号 int auto_increment primary key,
+学校_id int,
+UCI_EUR bool,
+UCI_IUPP bool,
+送生人数_UCIEUR  decimal(10,0),
+送生人数_UCIIUPP  decimal(10,0),
+备注 varchar(255),
+跟进情况 varchar(255),
+FOREIGN KEY (学校_id) REFERENCES 中学联系方式(学校_id)
+);
+create table if not exists 学生联系方式(
+学生_id int auto_increment primary key,
+姓名 varchar(45),
+大学_id int,
+联系电话 decimal(15,0),
+邮件  varchar(45),
+项目  varchar(45),
+FOREIGN KEY (大学_id) REFERENCES 大学联系方式(大学_id)
+);
